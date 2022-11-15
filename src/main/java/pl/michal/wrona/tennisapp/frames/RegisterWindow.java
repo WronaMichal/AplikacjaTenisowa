@@ -118,7 +118,7 @@ public class RegisterWindow extends JFrame {
 
         if (!emailAddress.matches("^(.+)@(.+)$")) {
             isValid = false;
-            error = "Adres Mailowy jest nieprawidłowy";
+            error = "Adres mailowy jest nieprawidłowy";
             emailAddressLabel.setForeground(Color.red);
         }
 
@@ -141,10 +141,10 @@ public class RegisterWindow extends JFrame {
         }
         if (isValid) {
             User user = userService.register(emailAddress, phoneNumber, password);
-            passwordLabel.setForeground(Color.black);
-            passwordConfirmLabel.setForeground(Color.black);
-            phoneNumberLabel.setForeground(Color.black);
-            emailAddressLabel.setForeground(Color.black);
+            passwordLabel.setForeground(null);
+            passwordConfirmLabel.setForeground(null);
+            phoneNumberLabel.setForeground(null);
+            emailAddressLabel.setForeground(null);
         } else{
             JFrame errorFrame = new ErrorWindow(windowUtils,error);
             errorFrame.setVisible(true);
