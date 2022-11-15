@@ -16,14 +16,6 @@ public class ErrorWindow extends JFrame {
         label = new JLabel(error);
         panel = new JPanel();
         panel.add(label);
-        returnButton = new JButton("Cofnij");
-        returnButton.setBounds(80, 180, 200, 25);
-        returnButton.addActionListener(
-                e -> {
-                    JFrame errorFrame = new ErrorWindow(windowUtils,error);
-                    errorFrame.setVisible(false);
-                }
-        );
         label.setBounds(80, 140, 200, 25);
         Font myFont1 = new Font("Arial", Font.BOLD, 20);
         label.setFont(myFont1);
@@ -32,6 +24,13 @@ public class ErrorWindow extends JFrame {
         int height = 350;
         setBounds(windowUtils.getX(width), windowUtils.getY(height), width, height);
         add(panel);
+        returnButton = new JButton("Cofnij");
+        returnButton.setBounds(80, 180, 200, 25);
+        returnButton.addActionListener(
+                e -> {
+                    dispose();
+                }
+        );
         panel.add(returnButton);
 
     }
