@@ -14,33 +14,36 @@ import java.util.Date;
 
 public class ReservationsSpecification extends JFrame {
     private Date date = Date.from(Instant.ofEpochMilli(System.currentTimeMillis()));
-    private String genre;
+    private Date time = Date.from(Instant.ofEpochMilli(System.currentTimeMillis()));
+    private String court;
     private JPanel offerSpecificationPanel;
     private JButton searchButton;
     private JSpinner dateSpinner;
+    private JSpinner timeSpinner;
     private JLabel dateLabel;
-    private JLabel movieLabel;
-    private JLabel genreLabel;
-    private JComboBox<String> genreComboBox;
+    private JLabel timeLabel;
+    private JLabel courtLabel;
+    private JComboBox<String> courtComboBox;
 
     public ReservationsSpecification (WindowUtils windowUtils, User user) {
         offerSpecificationPanel = new JPanel();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         searchButton = new JButton("Wyszukaj");
 
-        dateLabel = new JLabel("Data seansu:");
-        genreLabel = new JLabel("Kategoria:");
-        movieLabel = new JLabel("Film:");
+        dateLabel = new JLabel("Data rezerwacji");
+        timeLabel = new JLabel("Godzina rezerwacji");
+        courtLabel = new JLabel("Typ nawierzchni");
 
         dateLabel.setBounds(20, 10, 100, 25);
-        genreLabel.setBounds(20, 50, 70, 25);
-        movieLabel.setBounds(140, 50, 70, 25);
+        timeLabel.setBounds(20, 40, 130, 25);
+        courtLabel.setBounds(20, 80, 130, 25);
 
-        genreComboBox = new JComboBox<>();
-        genreComboBox.addItem(" ");
-        genreComboBox.addItem(SurfaceCourt.GRASS.toString());
-        genreComboBox.addItem(SurfaceCourt.CLAY.toString());
-        genreComboBox.addItem(SurfaceCourt.HARD.toString());
+
+        courtComboBox = new JComboBox<>();
+        courtComboBox.addItem(" ");
+        courtComboBox.addItem(SurfaceCourt.GRASS.toString());
+        courtComboBox.addItem(SurfaceCourt.CLAY.toString());
+        courtComboBox.addItem(SurfaceCourt.HARD.toString());
 ////        MovieService.genres.forEach(genre ->
 ////                genreComboBox.addItem(genre)
 //                // pobieranie listych mozliwych podlozy kortów (lista wysuwana - combobox)
@@ -55,15 +58,23 @@ public class ReservationsSpecification extends JFrame {
         dateEditor.getTextField().setEditable(false);
         dateSpinner.setEditor(dateEditor);
 
-        dateSpinner.setBounds(130, 10, 100, 25);
-        genreComboBox.setBounds(20, 90, 100, 25);
+        SpinnerDateModel timeSpinnerModel = new SpinnerDateModel();
+        timeSpinnerModel.setCalendarField(Calendar.MINUTE);
+        timeSpinner= new JSpinner(timeSpinnerModel);
+        JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "hh:mm");
+        timeEditor.getTextField().setEditable(false);
+        timeSpinner.setEditor(timeEditor);
 
-        searchButton.setBounds(80, 130, 100, 25);
+        dateSpinner.setBounds(150, 10, 100, 25);
+        timeSpinner.setBounds(150, 40, 100, 25);
+        courtComboBox.setBounds(20, 110, 100, 25);
 
-        genreComboBox.addActionListener(
+        searchButton.setBounds(100, 150, 100, 25);
+
+        courtComboBox.addActionListener(
                 e -> {
-                    if(genreComboBox.getSelectedIndex() > 0) {
-                        genre = genreComboBox.getSelectedItem().toString();
+                    if( courtComboBox.getSelectedIndex() > 0) {
+                        court =  courtComboBox.getSelectedItem().toString();
                         // genre zmienic na nazwe podłoża (element z listy)
                     }
                 }
@@ -73,11 +84,16 @@ public class ReservationsSpecification extends JFrame {
                 e -> date = dateSpinnerModel.getDate()
         );
 
+        dateSpinnerModel.addChangeListener(
+                e -> time = dateSpinnerModel.getDate()
+        );
+
         offerSpecificationPanel.add(dateLabel);
         offerSpecificationPanel.add(dateSpinner);
-        offerSpecificationPanel.add(movieLabel);
-        offerSpecificationPanel.add(genreLabel);
-        offerSpecificationPanel.add(genreComboBox);
+        offerSpecificationPanel.add(timeSpinner);
+        offerSpecificationPanel.add(timeLabel);
+        offerSpecificationPanel.add(courtLabel);
+        offerSpecificationPanel.add(courtComboBox);
         offerSpecificationPanel.add(searchButton);
 
         offerSpecificationPanel.setLayout(null);
@@ -94,7 +110,7 @@ public class ReservationsSpecification extends JFrame {
         );
 
         add(offerSpecificationPanel);
-        setBounds(500, 200, 260, 230);
-        setTitle("Specyfikacja");
+        setBounds(500, 200, 300, 300);
+        setTitle("System rezerwacji");
     }
 }

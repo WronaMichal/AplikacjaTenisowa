@@ -37,7 +37,6 @@ public class MainPanelWindow extends JFrame {
                     reservationsSpecificationsFrame.setVisible(true);
                     reservationsSpecificationsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     dispose();
-
                 }
         );
         panel.add(courtsButton);

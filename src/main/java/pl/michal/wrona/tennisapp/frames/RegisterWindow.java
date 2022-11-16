@@ -75,10 +75,13 @@ public class RegisterWindow extends JFrame {
         );
 
         returnButton = new JButton("Cofnij");
-        returnButton.setBounds(60, 170, 200, 25);
+        returnButton.setBounds(25, 330, 200, 25);
         returnButton.addActionListener(
                 e -> {
                     dispose();
+                    JFrame loginFrame = new LoginWindow(windowUtils, userService);
+                    loginFrame.setVisible(true);
+                    loginFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 }
         );
         panel.add(returnButton);
@@ -112,8 +115,8 @@ public class RegisterWindow extends JFrame {
 //                }
 //
 //        );
-        int width = 400;
-        int height = 400;
+        int width = 425;
+        int height = 425;
         setBounds(windowUtils.getX(width), windowUtils.getY(height), width, height);
         add(panel);
     }
