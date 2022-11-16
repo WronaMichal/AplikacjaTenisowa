@@ -30,14 +30,14 @@ public class UserService {
         }
     }
 
-    public User register(String emailAddress, String phoneNumber, String password) {
+    public User register(String phoneNumber, String password, String emailAddress) {
         List<User> users = userList.stream()
                 .filter(user -> user.getPhoneNumber().equals(phoneNumber) || user.getEmailAddress().equals(emailAddress))
                 .collect(Collectors.toList());
         if (!users.isEmpty()) {
             return null;
         } else {
-            User newUser = new User(emailAddress, phoneNumber, password, false);
+            User newUser = new User(phoneNumber, password, emailAddress, false);
             userList.add(newUser);
             return newUser;
         }

@@ -47,6 +47,7 @@ public class LoginWindow extends JFrame {
         loginButton.setBounds(25, 160, 200, 25);
         loginButton.addActionListener(
                 e -> login()
+
         );
 
         registerButton = new JButton("Rejestracja");
@@ -99,6 +100,17 @@ public class LoginWindow extends JFrame {
         String username = userNameField.getText();
         String password = String.valueOf(passwordField.getPassword());
         System.out.println(username + password);
-        userService.login(username, password);
+        User user = userService.login(username, password);
+        if(user==null){
+            JFrame errorFrame = new ErrorWindow(windowUtils, "Błędne dane podczas logowania");
+            errorFrame.setVisible(true);
+        }
+        else{
+            JFrame mainPanelWindowFrame = new MainPanelWindow(windowUtils,user);
+            dispose();
+            mainPanelWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainPanelWindowFrame.setVisible(true);
+        }
+
     }
 }

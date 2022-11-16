@@ -26,6 +26,7 @@ public class RegisterWindow extends JFrame {
     private JPasswordField passwordField;
     private JPasswordField passwordConfirmField;
     private JButton registerButton;
+    private JButton returnButton;
     private UserService userService;
 
     public RegisterWindow(WindowUtils windowUtils, UserService userService) throws HeadlessException {
@@ -72,6 +73,15 @@ public class RegisterWindow extends JFrame {
                     register();
                 }
         );
+
+        returnButton = new JButton("Cofnij");
+        returnButton.setBounds(60, 170, 200, 25);
+        returnButton.addActionListener(
+                e -> {
+                    dispose();
+                }
+        );
+        panel.add(returnButton);
         panel.add(emailAddressLabel);
         panel.add(emailAddressField);
         panel.add(phoneNumberLabel);
@@ -116,6 +126,7 @@ public class RegisterWindow extends JFrame {
         String password = String.valueOf(passwordField.getPassword());
         String passwordConfirm = String.valueOf(passwordConfirmField.getPassword());
 
+
         if (!emailAddress.matches("^(.+)@(.+)$")) {
             isValid = false;
             error = "Adres mailowy jest nieprawidłowy";
@@ -140,11 +151,18 @@ public class RegisterWindow extends JFrame {
             passwordConfirmLabel.setForeground(Color.red);
         }
         if (isValid) {
-            User user = userService.register(emailAddress, phoneNumber, password);
-            passwordLabel.setForeground(null);
-            passwordConfirmLabel.setForeground(null);
-            phoneNumberLabel.setForeground(null);
-            emailAddressLabel.setForeground(null);
+            User user = userService.register(phoneNumber, password, emailAddress);
+            if(user!=null){
+                dispose();
+                JFrame frame = new LoginWindow(windowUtils, userService);
+                frame.setVisible(true);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            }
+            else{
+                JFrame errorFrame = new ErrorWindow(windowUtils,"Użytkownik o podanym emailu lub telefonie już istnieje");
+                errorFrame.setVisible(true);
+            }
+
         } else{
             JFrame errorFrame = new ErrorWindow(windowUtils,error);
             errorFrame.setVisible(true);
