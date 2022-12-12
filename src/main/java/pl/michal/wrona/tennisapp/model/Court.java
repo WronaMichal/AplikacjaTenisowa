@@ -1,31 +1,43 @@
 package pl.michal.wrona.tennisapp.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Court {
-    static int numberOfCourt=0;
+    static int courtsCount =0;
     private int id;
-    private String surface;
+    private SurfaceCourt surface;
     private int openingHour;
     private int closingHour;
+    private double pricePerHour;
     private List<Reservation> reservations = new ArrayList<>();
 
-    public Court(String surface, int openingHour, int closingHour) {
-        numberOfCourt++;
-        this.id = numberOfCourt;
+    public Court(SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour) {
+        courtsCount++;
+        this.id = courtsCount;
         this.surface = surface;
         this.openingHour = openingHour;
         this.closingHour = closingHour;
+        this.pricePerHour = pricePerHour;
     }
 
+    public int getId() {
+        return id;
+    }
 
-    public String getSurface() {
+    public double getPricePerHour() {
+        return pricePerHour;
+    }
+
+    public void setPricePerHour(int pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
+    public SurfaceCourt getSurface() {
         return surface;
     }
 
-    public void setSurface(String surface) {
+    public void setSurface(SurfaceCourt surface) {
         this.surface = surface;
     }
 
@@ -51,5 +63,9 @@ public class Court {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public void addReservation (Reservation reservation){
+        reservations.add(reservation);
     }
 }

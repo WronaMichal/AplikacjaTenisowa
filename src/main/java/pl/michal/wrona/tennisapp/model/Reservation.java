@@ -6,11 +6,13 @@ public class Reservation {
     private LocalDateTime from;
     private LocalDateTime to;
     private User user;
+    private Court court;
 
-    public Reservation(LocalDateTime from, LocalDateTime to, User user) {
+    public Reservation(LocalDateTime from, LocalDateTime to, User user, Court court) {
         this.from = from;
         this.to = to;
         this.user = user;
+        this.court = court;
     }
 
     public LocalDateTime getFrom() {
@@ -37,5 +39,7 @@ public class Reservation {
         this.user = user;
     }
 
-
+    public Court getCourt() {
+        return court;
+    }
 }

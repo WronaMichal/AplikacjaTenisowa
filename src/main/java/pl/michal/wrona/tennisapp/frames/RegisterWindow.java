@@ -1,6 +1,7 @@
 package pl.michal.wrona.tennisapp.frames;
 
 import pl.michal.wrona.tennisapp.model.User;
+import pl.michal.wrona.tennisapp.service.MainService;
 import pl.michal.wrona.tennisapp.service.UserService;
 import pl.michal.wrona.tennisapp.utils.WindowUtils;
 
@@ -14,8 +15,8 @@ import java.util.regex.Pattern;
 public class RegisterWindow extends JFrame {
 
     private WindowUtils windowUtils;
+    private MainService mainService;
     private JPanel panel;
-
     private JLabel emailAddressLabel;
     private JLabel phoneNumberLabel;
     private JLabel passwordLabel;
@@ -27,11 +28,10 @@ public class RegisterWindow extends JFrame {
     private JPasswordField passwordConfirmField;
     private JButton registerButton;
     private JButton returnButton;
-    private UserService userService;
 
-    public RegisterWindow(WindowUtils windowUtils, UserService userService) throws HeadlessException {
+    public RegisterWindow(WindowUtils windowUtils, MainService mainService) throws HeadlessException {
         this.windowUtils = windowUtils;
-        this.userService = userService;
+        this.mainService = mainService;
         this.setTitle("Zarejestruj się");
         panel = new JPanel();
 
@@ -79,7 +79,7 @@ public class RegisterWindow extends JFrame {
         returnButton.addActionListener(
                 e -> {
                     dispose();
-                    JFrame loginFrame = new LoginWindow(windowUtils, userService);
+                    JFrame loginFrame = new LoginWindow(windowUtils, mainService);
                     loginFrame.setVisible(true);
                     loginFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 }
@@ -154,10 +154,10 @@ public class RegisterWindow extends JFrame {
             passwordConfirmLabel.setForeground(Color.red);
         }
         if (isValid) {
-            User user = userService.register(phoneNumber, password, emailAddress);
+            User user = mainService.register(phoneNumber, password, emailAddress);
             if(user!=null){
                 dispose();
-                JFrame frame = new LoginWindow(windowUtils, userService);
+                JFrame frame = new LoginWindow(windowUtils, mainService);
                 frame.setVisible(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }

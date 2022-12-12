@@ -3,14 +3,13 @@ package pl.michal.wrona.tennisapp.service;
 import pl.michal.wrona.tennisapp.model.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserService {
+    private User activeUser;
     private List<User> userList = new ArrayList<>();
-
 
     public UserService() {
         userList.add(new User("11111", "aa22", "wro1@gmai.com", false));
@@ -20,11 +19,13 @@ public class UserService {
     }
 
     public User login(String userName, String password) {
-        Optional<User> optionalUser = userList.stream().filter(user -> (user.getEmailAddress().equals(userName) || user.getPhoneNumber().equals(userName))
+        Optional<User> optionalUser = userList.stream()
+                .filter(user -> (user.getEmailAddress().equals(userName) || user.getPhoneNumber().equals(userName))
                 && user.getPassword().equals(password)
         ).findFirst();
         if (optionalUser.isPresent()) {
-            return optionalUser.get();
+            activeUser = optionalUser.get();
+            return activeUser;
         } else {
             return null;
         }
@@ -44,5 +45,19 @@ public class UserService {
 
     }
 
+    public User getActiveUser(){
+        return activeUser;
+    }
 
-}
+    public User getUserByPhoneNumber(String phoneNumber){
+        Optional<User> optionalUser = userList.stream()
+                .filter(user -> user.getPhoneNumber().equals(phoneNumber))
+                .findFirst();
+        if(optionalUser.isPresent()){
+            return optionalUser.get();
+        }
+        else{
+            return null;
+        }
+        }
+    }

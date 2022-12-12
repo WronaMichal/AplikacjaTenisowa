@@ -1,7 +1,6 @@
 package pl.michal.wrona.tennisapp.model;
 
 public enum SurfaceCourt {
-
     GRASS {
         @Override
         public String toString() {
@@ -17,7 +16,7 @@ public enum SurfaceCourt {
     HARD {
         @Override
         public String toString() {
-            return "Trawa";
+            return "Twarda";
         }
     }
 }

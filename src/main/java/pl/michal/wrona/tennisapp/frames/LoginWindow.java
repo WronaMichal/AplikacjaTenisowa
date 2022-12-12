@@ -1,5 +1,6 @@
 package pl.michal.wrona.tennisapp.frames;
 import pl.michal.wrona.tennisapp.model.User;
+import pl.michal.wrona.tennisapp.service.MainService;
 import pl.michal.wrona.tennisapp.service.UserService;
 import pl.michal.wrona.tennisapp.utils.WindowUtils;
 
@@ -19,11 +20,11 @@ public class LoginWindow extends JFrame {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton registerButton;
-    private UserService userService;
+    private MainService mainService;
 
-    public LoginWindow(WindowUtils windowUtils, UserService userService) throws HeadlessException {
+    public LoginWindow(WindowUtils windowUtils, MainService mainService) throws HeadlessException {
         this.windowUtils = windowUtils;
-        this.userService = userService;
+        this.mainService = mainService;
         this.setTitle("System rezerwacji Tenis.tenis");
         panel = new JPanel();
 
@@ -54,7 +55,7 @@ public class LoginWindow extends JFrame {
         registerButton.setBounds(25, 195, 200, 25);
         registerButton.addActionListener(
                 e -> {
-                    JFrame frame = new RegisterWindow(windowUtils, userService);
+                    JFrame frame = new RegisterWindow(windowUtils, mainService);
                     frame.setVisible(true);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     dispose();
@@ -100,13 +101,13 @@ public class LoginWindow extends JFrame {
         String username = userNameField.getText();
         String password = String.valueOf(passwordField.getPassword());
         System.out.println(username + password);
-        User user = userService.login(username, password);
+        User user = mainService.login(username, password);
         if(user==null){
             JFrame errorFrame = new ErrorWindow(windowUtils, "Błędne dane podczas logowania");
             errorFrame.setVisible(true);
         }
         else{
-            JFrame mainPanelWindowFrame = new MainPanelWindow(windowUtils,user);
+            JFrame mainPanelWindowFrame = new MainPanelWindow(windowUtils, mainService);
             dispose();
             mainPanelWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             mainPanelWindowFrame.setVisible(true);

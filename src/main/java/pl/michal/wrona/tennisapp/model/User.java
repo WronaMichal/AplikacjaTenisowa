@@ -1,10 +1,15 @@
 package pl.michal.wrona.tennisapp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private String phoneNumber;
     private String password;
     private String emailAddress;
     private boolean isAdmin;
+
+    private List<Reservation> reservations = new ArrayList<>();
 
     public User(String phoneNumber, String password, String emailAddress, boolean isAdmin) {
         this.phoneNumber = phoneNumber;
@@ -43,5 +48,13 @@ public class User {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void addReservation (Reservation reservation){
+        reservations.add(reservation);
     }
 }
