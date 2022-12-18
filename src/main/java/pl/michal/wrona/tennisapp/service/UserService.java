@@ -1,6 +1,8 @@
 package pl.michal.wrona.tennisapp.service;
 
 import pl.michal.wrona.tennisapp.model.User;
+import pl.michal.wrona.tennisapp.repository.CourtsRepository;
+import pl.michal.wrona.tennisapp.repository.UsersRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +11,20 @@ import java.util.stream.Collectors;
 
 public class UserService {
     private User activeUser;
-    private List<User> userList = new ArrayList<>();
+    private List<User> userList;
+    private UsersRepository usersRepository;
 
-    public UserService() {
-        userList.add(new User("11111", "aa22", "wro1@gmai.com", false));
-        userList.add(new User("22222", "aa22", "wro2@gmai.com", false));
-        userList.add(new User("33333", "aa22", "wro3@gmai.com", false));
-        userList.add(new User("44444", "aa22", "wro4@gmai.com", true));
+    public UserService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+        userList = usersRepository.findAll();
+
     }
 
     public User login(String userName, String password) {
         Optional<User> optionalUser = userList.stream()
                 .filter(user -> (user.getEmailAddress().equals(userName) || user.getPhoneNumber().equals(userName))
-                && user.getPassword().equals(password)
-        ).findFirst();
+                        && user.getPassword().equals(password)
+                ).findFirst();
         if (optionalUser.isPresent()) {
             activeUser = optionalUser.get();
             return activeUser;
@@ -45,19 +47,22 @@ public class UserService {
 
     }
 
-    public User getActiveUser(){
+    public User getActiveUser() {
         return activeUser;
     }
 
-    public User getUserByPhoneNumber(String phoneNumber){
+    public User getUserByPhoneNumber(String phoneNumber) {
         Optional<User> optionalUser = userList.stream()
                 .filter(user -> user.getPhoneNumber().equals(phoneNumber))
                 .findFirst();
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             return optionalUser.get();
-        }
-        else{
+        } else {
             return null;
         }
-        }
     }
+
+    public List <User> getUsersList(){
+        return userList;
+    }
+}

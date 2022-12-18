@@ -67,7 +67,6 @@ public class ReservationsSpecificationWindow extends JFrame {
         endTimeComboBox.addItem(" ");
         int minOpeningHour = mainService.getMinOpeningHour();
         int maxClosingHours = mainService.getMaxClosingHour();
-        // TODO zrób to w jedne pętli -> zrobione
         for (int i = minOpeningHour; i <= maxClosingHours; i++) {
             String hour;
             if (i < 10) {
@@ -116,8 +115,7 @@ public class ReservationsSpecificationWindow extends JFrame {
         );
 
 
-        // TODO ustaw domyslna wartosc dla endTime lub startTime lub dodać wartość pustą i do comboxa dla godzin i uzytkownik musi cos wybrac aby przycisk wyszukaj byl dostepny
-        // TODO COmbox nawierzchni na prawo i byl wiekszy przycisk "wyszkuj" -> zrobione
+        //TODO aby można było wyświetlać datę dzisiejszą lub przyszła
         dateSpinnerModel.addChangeListener(
                 e -> date = dateSpinnerModel.getDate()
         );

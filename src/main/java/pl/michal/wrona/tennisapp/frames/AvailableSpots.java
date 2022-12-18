@@ -1,12 +1,17 @@
 package pl.michal.wrona.tennisapp.frames;
 
 import pl.michal.wrona.tennisapp.model.Court;
+import pl.michal.wrona.tennisapp.repository.CourtsRepository;
+import pl.michal.wrona.tennisapp.repository.ReservationsFileRepository;
+import pl.michal.wrona.tennisapp.repository.ReservationsRepository;
 import pl.michal.wrona.tennisapp.service.MainService;
 import pl.michal.wrona.tennisapp.utils.WindowUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.EventObject;
 import java.util.List;
 
-public class AvailableSpots extends JFrame{
+public class AvailableSpots extends JFrame {
     private JTable courtsTable;
     private JButton selectCourtButton;
     private JButton returnButton;
@@ -25,30 +30,28 @@ public class AvailableSpots extends JFrame{
     private String genre;
     private Court selectedCourt;
 
-    public AvailableSpots(WindowUtils windowUtils, MainService mainService, LocalDateTime dateFrom, LocalDateTime dateTo , String courtType) {
+    public AvailableSpots(WindowUtils windowUtils, MainService mainService, LocalDateTime dateFrom, LocalDateTime dateTo, String courtType) {
         List<Court> courtsByCriteria =
-                mainService.getCourtsByCriteria(dateFrom, dateTo , courtType);
+                mainService.getCourtsByCriteria(dateFrom, dateTo, courtType);
         // filtruje po rezerwacjach w systemie aby zobaczyć czy rezerwacja jaka chce user istnieje na naszej liście
         courtPanel = new JPanel();
         scrollPanel = new JScrollPane();
         selectCourtButton = new JButton("Wybierz kort");
         selectCourtButton.setEnabled(false);
         selectCourtButton.addActionListener(e -> {
-                mainService.addReservation(dateFrom, dateTo, mainService.getActiveUser(), selectedCourt);
-                JFrame selectCourtFrame = new MainPanelWindow(windowUtils, mainService);
-                selectCourtFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                selectCourtFrame.setVisible(true);
-                dispose();
-            }
+                    mainService.saveReservation(mainService.addReservation(dateFrom, dateTo, mainService.getActiveUser(), selectedCourt));
+                    JFrame selectCourtFrame = new MainPanelWindow(windowUtils, mainService);
+                    selectCourtFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    selectCourtFrame.setVisible(true);
+                    dispose();
+                }
         );
 
 
-        // TODO zrób nowe okno na podstawie AvailableSpots -> zrobione
-        // Wyświetlanie tylko tych kortów co są dostępne, dodać domyśle rezerwacje 4 -> zrobione
         int width = 1000;
         int height = courtsByCriteria.size() * 100;
         setBounds(windowUtils.getX(width), windowUtils.getY(height), width, height);
-        String[] columns = {"Nr kortu", "Rodzaj nawierzchni", "Data rezerwacji", "Godzina rozpoczęcia", "Godzina zakończenia","Cena za godzinę", "Cena końcowa"};
+        String[] columns = {"Nr kortu", "Rodzaj nawierzchni", "Data rezerwacji", "Godzina rozpoczęcia", "Godzina zakończenia", "Cena za godzinę", "Cena końcowa"};
         Duration durationTime = Duration.between(dateFrom, dateTo);
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterHour = DateTimeFormatter.ofPattern("HH:mm");
@@ -60,11 +63,10 @@ public class AvailableSpots extends JFrame{
             data[i][3] = dateFrom.format(formatterHour);
             data[i][4] = dateTo.format(formatterHour);
             data[i][5] = String.valueOf(courtsByCriteria.get(i).getPricePerHour());
-            data[i][6] = String.valueOf(courtsByCriteria.get(i).getPricePerHour()*durationTime.toHours());
+            data[i][6] = String.valueOf(courtsByCriteria.get(i).getPricePerHour() * durationTime.toHours());
         }
 
 
-        //TODO wydziel datę do innej kolumny i podawaj ją -> zrobione
         courtsTable = new JTable(data, columns) {
             public boolean editCellAt(int row, int column, EventObject e) {
                 return false;

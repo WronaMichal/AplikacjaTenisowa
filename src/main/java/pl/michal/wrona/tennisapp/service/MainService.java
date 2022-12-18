@@ -4,6 +4,8 @@ import pl.michal.wrona.tennisapp.model.Court;
 import pl.michal.wrona.tennisapp.model.Reservation;
 import pl.michal.wrona.tennisapp.model.SurfaceCourt;
 import pl.michal.wrona.tennisapp.model.User;
+import pl.michal.wrona.tennisapp.repository.ReservationsFileRepository;
+import pl.michal.wrona.tennisapp.repository.ReservationsRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +15,7 @@ public class MainService {
     UserService userService;
     ReservationService reservationService;
 
-    public MainService(CourtService courtService, UserService userService,  ReservationService reservationService) {
+    public MainService(CourtService courtService, UserService userService, ReservationService reservationService) {
         this.courtService = courtService;
         this.userService = userService;
         this.reservationService = reservationService;
@@ -40,8 +42,8 @@ public class MainService {
         return courtService.getMaxClosingHour();
     }
 
-    public void addReservation(LocalDateTime from, LocalDateTime to, User user, Court court){
-        reservationService.addReservation(from, to, user, court);
+    public Reservation addReservation(LocalDateTime from, LocalDateTime to, User user, Court court){
+        return reservationService.addReservation(from, to, user, court);
     }
 
     public User getActiveUser(){
@@ -58,6 +60,9 @@ public class MainService {
 
     public List <Reservation> getUserReservations(User user){
         return reservationService.getUserReservations(user);
+    }
+    public void saveReservation (Reservation reservation){
+        reservationService.save(reservation);
     }
 
 

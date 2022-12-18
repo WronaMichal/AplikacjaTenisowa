@@ -4,7 +4,9 @@ import pl.michal.wrona.tennisapp.exception.AccessDeniedException;
 import pl.michal.wrona.tennisapp.model.Court;
 import pl.michal.wrona.tennisapp.model.SurfaceCourt;
 import pl.michal.wrona.tennisapp.model.User;
+import pl.michal.wrona.tennisapp.repository.CourtsRepository;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,13 +15,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CourtService {
-    private List<Court> courtsList = new ArrayList<>();
+    private List<Court> courtsList;
+    private CourtsRepository courtsRepository;
 
-    public CourtService() {
-        courtsList.add(new Court(SurfaceCourt.GRASS, 10, 21, 60));
-        courtsList.add(new Court(SurfaceCourt.HARD, 8, 22, 50));
-        courtsList.add(new Court(SurfaceCourt.CLAY, 9, 20, 40));
-        courtsList.add(new Court(SurfaceCourt.CLAY, 9, 21, 40));
+    public CourtService(CourtsRepository courtsRepository) {
+        this.courtsRepository = courtsRepository;
+        courtsList = courtsRepository.findAll();
     }
 
     public List<Court> getCourtsList() {
@@ -40,9 +41,7 @@ public class CourtService {
                 .get();
     }
 
-    // TODO jak chcesz filtrować korty, za pomocą parametrów jakie wybierze użytkownik -> zrób z Danielem. Zrob filtr aby zgadzał się z typem kortu -> zrobione
-    //TODO napisać noneMatch -> overlapping dates java -> zrobione
-    //TODO https://community.coda.io/t/checking-for-date-overlaps-the-most-optimal-formula/25879 -> zrobione
+
     public List<Court> getCourtsByCriteria(LocalDateTime dateFrom, LocalDateTime dateTo, String courtType) {
         return courtsList.stream()
                 .filter(c -> c.getSurface().toString().equals(courtType))

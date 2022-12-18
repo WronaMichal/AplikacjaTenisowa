@@ -34,7 +34,7 @@ public class MainPanelWindow extends JFrame {
                 }
         );
 
-// TODO popracuj na wygladem okienka i wyświetlanie wszystkich rezerwacji -> podobne okienko jak do wyświetlania kortów -> zrobione
+
         courtsButton = new JButton("Zarezerwuj");
         courtsButton.setBounds(60, 220, 200, 25);
         courtsButton.addActionListener(

@@ -15,6 +15,7 @@ public class Reservation {
         this.court = court;
     }
 
+
     public LocalDateTime getFrom() {
         return from;
     }

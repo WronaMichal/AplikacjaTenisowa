@@ -21,6 +21,14 @@ public class Court {
         this.pricePerHour = pricePerHour;
     }
 
+    public Court(int id, SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour) {
+        this.id = id;
+        this.surface = surface;
+        this.openingHour = openingHour;
+        this.closingHour = closingHour;
+        this.pricePerHour = pricePerHour;
+    }
+
     public int getId() {
         return id;
     }
