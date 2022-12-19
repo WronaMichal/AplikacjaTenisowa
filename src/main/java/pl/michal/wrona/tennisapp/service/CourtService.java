@@ -29,8 +29,8 @@ public class CourtService {
 
     public Court getCourt(SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour) {
         Optional<Court> selectedCourt = courtsList.stream()
-                .filter(c -> c.getSurface().equals(surface) && c.getOpeningHour()==openingHour
-                        && c.getClosingHour()==closingHour && c.getPricePerHour() == pricePerHour)
+                .filter(c -> c.getSurface().equals(surface) && c.getOpeningHour() == openingHour
+                        && c.getClosingHour() == closingHour && c.getPricePerHour() == pricePerHour)
                 .findAny();
         return selectedCourt.orElse(null);
     }
@@ -56,10 +56,12 @@ public class CourtService {
         return courtsList.stream().map(Court::getClosingHour).max(Comparator.comparingInt(Integer::valueOf)).get();
     }
 
-    public void addCourt(String surface, int openingHour, int closingHour, User user) {
+    public void addCourt(SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour, User user) {
         if (!user.isAdmin()) {
             throw new AccessDeniedException("Only Admin can add court");
         }
-
+        Court court = new Court(surface, openingHour, closingHour, pricePerHour);
+        courtsList.add(court);
+        courtsRepository.save(court);
     }
 }

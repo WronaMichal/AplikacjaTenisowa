@@ -1,17 +1,13 @@
 package pl.michal.wrona.tennisapp.frames;
 
 import pl.michal.wrona.tennisapp.model.Court;
-import pl.michal.wrona.tennisapp.repository.CourtsRepository;
-import pl.michal.wrona.tennisapp.repository.ReservationsFileRepository;
-import pl.michal.wrona.tennisapp.repository.ReservationsRepository;
 import pl.michal.wrona.tennisapp.service.MainService;
 import pl.michal.wrona.tennisapp.utils.WindowUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

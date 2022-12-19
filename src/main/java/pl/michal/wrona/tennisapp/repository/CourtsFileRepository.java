@@ -19,6 +19,28 @@ public class CourtsFileRepository implements CourtsRepository {
         // z nimi zrobić
         //TODO znajdź sobie kort po ID czyli wczytujesz jeden tylko kort czyli jak użytkownik szuka konkretnego kortu
         // żeby jeden kort był wczytay do pamieci Javy
+
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\courts.txt", true));
+            bw.write(System.lineSeparator() +
+                    court.getId() + "," +
+                    court.getSurface().toString() + "," +
+                    court.getOpeningHour() + "," +
+                    court.getClosingHour() + "," +
+                    court.getPricePerHour()
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null)
+                    bw.close();
+            } catch (IOException e) {
+            }
+        }
+
+
     }
 
     @Override
@@ -30,14 +52,14 @@ public class CourtsFileRepository implements CourtsRepository {
             br = new BufferedReader(new FileReader("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\courts.txt"));
             String nextLine = br.readLine();
             while (null != nextLine) {
-               String[] properties = nextLine.split(",");
-               courtsList.add(new Court(
-                       Integer.parseInt(properties[0]),
-                       SurfaceCourt.valueOf(properties[1]),
-                       Integer.parseInt(properties[2]),
-                       Integer.parseInt(properties[3]),
-                       Double.parseDouble(properties[4])
-               ));
+                String[] properties = nextLine.split(",");
+                courtsList.add(new Court(
+                        Integer.parseInt(properties[0]),
+                        SurfaceCourt.valueOf(properties[1]),
+                        Integer.parseInt(properties[2]),
+                        Integer.parseInt(properties[3]),
+                        Double.parseDouble(properties[4])
+                ));
                 nextLine = br.readLine();
             }
         } catch (IOException ex) {

@@ -10,7 +10,7 @@ public class MainPanelWindow extends JFrame {
     private JPanel panel;
     private JButton paymentButton;
     private JButton reservationsButton;
-    private JButton profileButton;
+    private JButton addingCourtButton;
     private JButton courtsButton;
     private JButton logOutButton;
 
@@ -57,10 +57,28 @@ public class MainPanelWindow extends JFrame {
                 }
         );
 
+        addingCourtButton = new JButton("Dodawanie kortu");
+        addingCourtButton.setBounds(60, 310, 200, 25);
+        if(!mainService.getActiveUser().isAdmin()) {
+            addingCourtButton.setVisible(false);
+        }
+        else{
+            addingCourtButton.setVisible(true);
+        }
+        addingCourtButton.addActionListener(
+                e -> {
+                    JFrame addingCourtFrame = new AddingCourtWindow(windowUtils, mainService);
+                    addingCourtFrame.setVisible(true);
+                    addingCourtFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    dispose();
+                }
+        );
+
 
         panel.add(courtsButton);
         panel.add(paymentButton);
         panel.add(reservationsButton);
+        panel.add(addingCourtButton);
         setTitle("Główne Menu");
 
     }
