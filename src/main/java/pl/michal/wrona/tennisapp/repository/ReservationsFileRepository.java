@@ -16,7 +16,12 @@ public class ReservationsFileRepository implements ReservationsRepository {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\reservations.txt", true));
-            bw.write(System.lineSeparator()+ reservation.toString());
+            bw.write(System.lineSeparator() +
+                    reservation.getFrom().toString() + "," +
+                    reservation.getTo().toString() + "," +
+                    reservation.getUser().getPhoneNumber() + "," +
+                    reservation.getCourt().getId()
+            );
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -37,7 +42,7 @@ public class ReservationsFileRepository implements ReservationsRepository {
             String nextLine = br.readLine();
             while (null != nextLine) {
                 String[] properties = nextLine.split(",");
-                reservationList.add(new Reservation (LocalDateTime.parse(properties[0]),
+                reservationList.add(new Reservation(LocalDateTime.parse(properties[0]),
                         LocalDateTime.parse(properties[1]),
                         userList.stream()
                                 .filter(user -> user.getPhoneNumber().equals(properties[2]))
