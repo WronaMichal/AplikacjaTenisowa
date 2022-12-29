@@ -20,6 +20,7 @@ public class ReservationService {
     public ReservationService(UserService userService, CourtService courtService, ReservationsRepository reservationsRepository) {
         this.reservationsRepository = reservationsRepository;
         reservationsList = reservationsRepository.findAll(courtService.getCourtsList(), userService.getUsersList());
+
     }
     /**
      * 1. check if time from, to exists.

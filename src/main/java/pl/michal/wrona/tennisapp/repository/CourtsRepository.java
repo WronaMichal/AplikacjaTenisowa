@@ -9,5 +9,5 @@ import java.util.List;
 public interface CourtsRepository {
     List<Court> findAll();
     void save(Court court);
-
+Court findById(int courtId);
 }

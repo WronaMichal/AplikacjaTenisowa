@@ -8,10 +8,7 @@ import pl.michal.wrona.tennisapp.repository.CourtsRepository;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CourtService {
@@ -56,12 +53,16 @@ public class CourtService {
         return courtsList.stream().map(Court::getClosingHour).max(Comparator.comparingInt(Integer::valueOf)).get();
     }
 
-    public void addCourt(SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour, User user) {
-        if (!user.isAdmin()) {
-            throw new AccessDeniedException("Only Admin can add court");
+    public void addCourt(String surface, int openingHour, int closingHour, double pricePerHour) {
+        Optional<SurfaceCourt> surfaceCourt = Arrays.stream(SurfaceCourt.values()).filter(sc -> sc.toString().equals(surface))
+                .findFirst();
+        if(surfaceCourt.isEmpty()){
+            throw new RuntimeException("Nie znaleziono takiego kortu");
         }
-        Court court = new Court(surface, openingHour, closingHour, pricePerHour);
-        courtsList.add(court);
-        courtsRepository.save(court);
+        else{
+            Court court = new Court(surfaceCourt.get(), openingHour, closingHour, pricePerHour);
+            courtsRepository.save(court);
+        }
+
     }
 }

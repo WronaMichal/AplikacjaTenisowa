@@ -18,6 +18,10 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
+    public User(){
+
+    }
+
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
@@ -56,5 +60,17 @@ public class User {
 
     public void addReservation (Reservation reservation){
         reservations.add(reservation);
+    }
+
+    @Override
+    public String toString() {
+        return phoneNumber + "," + password +  "," + emailAddress +  "," + isAdmin;
+    }
+
+    public static User fromString(String[] properties){
+        return new User(properties[0],
+                properties[1],
+                properties[2],
+                Boolean.parseBoolean(properties[3]));
     }
 }

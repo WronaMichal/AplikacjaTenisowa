@@ -96,25 +96,6 @@ public class RegisterWindow extends JFrame {
         panel.add(errorLabel);
         panel.add(registerButton);
 
-//        userNameField.getDocument().addDocumentListener(
-//                new DocumentListener() {
-//                    @Override
-//                    public void insertUpdate(DocumentEvent e) {
-//                        textFieldChange();
-//                    }
-//
-//                    @Override
-//                    public void removeUpdate(DocumentEvent e) {
-//                        textFieldChange();
-//                    }
-//
-//                    @Override
-//                    public void changedUpdate(DocumentEvent e) {
-//                        textFieldChange();
-//                    }
-//                }
-//
-//        );
         int width = 425;
         int height = 425;
         setBounds(windowUtils.getX(width), windowUtils.getY(height), width, height);

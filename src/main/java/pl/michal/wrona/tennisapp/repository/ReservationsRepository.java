@@ -9,4 +9,5 @@ import java.util.List;
 public interface ReservationsRepository {
     List<Reservation> findAll(List<Court> courtList, List<User> userList);
     void save (Reservation reservation);
+    Reservation findById(int reservationId, List<Court> courtList, List<User> userList);
 }

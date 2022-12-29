@@ -6,15 +6,33 @@ public class Reservation {
     private LocalDateTime from;
     private LocalDateTime to;
     private User user;
+    static int maxReservationCount = 0;
+    private int id;
     private Court court;
 
+    //TODO pododawać court id i user id po to aby przy JSONie można było połączyć
+
     public Reservation(LocalDateTime from, LocalDateTime to, User user, Court court) {
+        maxReservationCount++;
+        this.id = maxReservationCount;
         this.from = from;
         this.to = to;
         this.user = user;
         this.court = court;
     }
 
+    public Reservation(int id, LocalDateTime from, LocalDateTime to, User user, Court court) {
+        this.id = id;
+        maxReservationCount = id;
+        this.from = from;
+        this.to = to;
+        this.user = user;
+        this.court = court;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public LocalDateTime getFrom() {
         return from;
@@ -43,4 +61,12 @@ public class Reservation {
     public Court getCourt() {
         return court;
     }
+
+
+    @Override
+    public String toString() {
+        return from + "," + to + "," + user.getPhoneNumber() + "," + court.getId();
+    }
+
+
 }

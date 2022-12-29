@@ -65,5 +65,9 @@ public class MainService {
         reservationService.save(reservation);
     }
 
+    public void saveCourt (String surfaceCourt, int openingHour, int closingHour, double pricePerHour){
+        courtService.addCourt(surfaceCourt, openingHour, closingHour, pricePerHour);
+    }
+
 
 }

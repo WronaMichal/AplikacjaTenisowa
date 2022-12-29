@@ -17,7 +17,6 @@ public class UserService {
     public UserService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
         userList = usersRepository.findAll();
-
     }
 
     public User login(String userName, String password) {
@@ -42,6 +41,7 @@ public class UserService {
         } else {
             User newUser = new User(phoneNumber, password, emailAddress, false);
             userList.add(newUser);
+            usersRepository.save(newUser);
             return newUser;
         }
 

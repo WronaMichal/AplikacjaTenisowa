@@ -1,10 +1,12 @@
 package pl.michal.wrona.tennisapp.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class Court {
-    static int courtsCount =0;
+    static int maxCourtsCount = 0;
     private int id;
     private SurfaceCourt surface;
     private int openingHour;
@@ -12,9 +14,29 @@ public class Court {
     private double pricePerHour;
     private List<Reservation> reservations = new ArrayList<>();
 
+    public Court() {
+    }
+
+    @Override
+    public String toString() {
+            return id + "," + getSurface().name() + "," + openingHour + "," + closingHour + "," + pricePerHour;
+
+    }
+
+
+    public Court fromString(String[] properties) {
+        return new Court(Integer.parseInt(properties[0]),
+                SurfaceCourt.valueOf(properties[1]),
+                Integer.parseInt(properties[2]),
+                Integer.parseInt(properties[3]),
+                Double.parseDouble(properties[4]));
+    }
+
+    //TODO wzorzec projektowy fabryka -> factory JAVA
+
     public Court(SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour) {
-        courtsCount++;
-        this.id = courtsCount;
+        maxCourtsCount++;
+        this.id = maxCourtsCount;
         this.surface = surface;
         this.openingHour = openingHour;
         this.closingHour = closingHour;
@@ -23,6 +45,7 @@ public class Court {
 
     public Court(int id, SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour) {
         this.id = id;
+        maxCourtsCount = id;
         this.surface = surface;
         this.openingHour = openingHour;
         this.closingHour = closingHour;
@@ -73,7 +96,7 @@ public class Court {
         this.reservations = reservations;
     }
 
-    public void addReservation (Reservation reservation){
+    public void addReservation(Reservation reservation) {
         reservations.add(reservation);
     }
 }
