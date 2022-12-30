@@ -22,7 +22,7 @@ public class Main {
         ObjectMapper objectMapper = new ObjectMapper();
        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         CourtsRepository courtsRepository = new CourtsJsonFileRepository(objectMapper);
-        UsersRepository usersRepository = new UsersFileRepository();
+        UsersRepository usersRepository = new UsersJsonFileRepository(objectMapper);
         ReservationsRepository reservationsRepository = new ReservationsFileRepository();
         CourtService courtService = new CourtService(courtsRepository);
         UserService userService = new UserService(usersRepository);
