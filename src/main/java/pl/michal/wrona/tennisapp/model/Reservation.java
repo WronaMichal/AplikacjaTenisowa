@@ -1,6 +1,13 @@
 package pl.michal.wrona.tennisapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.LocalDateTime;
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 
 public class Reservation {
     private LocalDateTime from;
@@ -21,6 +28,7 @@ public class Reservation {
         this.court = court;
     }
 
+
     public Reservation(int id, LocalDateTime from, LocalDateTime to, User user, Court court) {
         this.id = id;
         maxReservationCount = id;
@@ -29,6 +37,8 @@ public class Reservation {
         this.user = user;
         this.court = court;
     }
+
+
 
     public int getId() {
         return id;

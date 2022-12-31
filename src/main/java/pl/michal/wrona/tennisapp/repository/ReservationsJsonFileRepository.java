@@ -1,5 +1,8 @@
 package pl.michal.wrona.tennisapp.repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pl.michal.wrona.tennisapp.model.Court;
 import pl.michal.wrona.tennisapp.model.Reservation;
 import pl.michal.wrona.tennisapp.model.User;
@@ -11,14 +14,36 @@ import java.util.List;
 import java.util.Optional;
 
 public class ReservationsJsonFileRepository implements ReservationsRepository {
+    private ObjectMapper objectMapper;
+    private CourtsRepository courtsRepository;
+    private UsersRepository usersRepository;
+    private List<User> usersList = new ArrayList<>();
+    private List<Court> courtsList = new ArrayList<>();
+
+    public ReservationsJsonFileRepository(ObjectMapper objectMapper, CourtsRepository courtsRepository, UsersRepository usersRepository) {
+        this.objectMapper = objectMapper;
+        usersList = usersRepository.findAll();
+        courtsList = courtsRepository.findAll();
+
+    }
+
 
     @Override
     public void save(Reservation reservation) {
+        objectMapper.registerModule(new JavaTimeModule());
+        String reservationJson = null;
+        List<Reservation> reservationsList = findAll(courtsList,usersList);
+        reservationsList.add(reservation);
+        try {
+            reservationJson = objectMapper.writeValueAsString(reservationsList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\reservations.txt", true));
-            bw.write( System.lineSeparator() + reservation.getId() + "," + reservation.toString()
-            );
+            bw = new BufferedWriter(new FileWriter("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\reservations.json", false));
+            bw.write(reservationJson);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
