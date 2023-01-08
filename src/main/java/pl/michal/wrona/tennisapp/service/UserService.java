@@ -6,7 +6,9 @@ import pl.michal.wrona.tennisapp.repository.UsersRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class UserService {
@@ -64,5 +66,10 @@ public class UserService {
 
     public List <User> getUsersList(){
         return userList;
+    }
+
+    public Map <String,User> getUserMap(){
+        return userList.stream()
+        .collect(Collectors.toMap(User::getPhoneNumber,Function.identity()));
     }
 }

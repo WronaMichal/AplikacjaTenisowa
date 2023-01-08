@@ -1,5 +1,6 @@
 package pl.michal.wrona.tennisapp.repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+
 
 public class CourtsJsonFileRepository implements CourtsRepository {
     private ObjectMapper objectMapper;
@@ -53,7 +56,7 @@ public class CourtsJsonFileRepository implements CourtsRepository {
         BufferedReader br = null;
         Optional<Court> courtFound = null;
         try {
-            br = new BufferedReader(new FileReader("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\courts.json"));
+            br = new BufferedReader(new FileReader("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\courts.txt"));
 
             findAll().stream()
                     .filter(cl -> cl.getId() == courtId)

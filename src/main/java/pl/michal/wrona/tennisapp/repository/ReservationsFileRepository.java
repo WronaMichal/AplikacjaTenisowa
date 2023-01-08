@@ -8,6 +8,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ReservationsFileRepository implements ReservationsRepository {
@@ -75,7 +76,7 @@ public class ReservationsFileRepository implements ReservationsRepository {
 
 
     @Override
-    public List<Reservation> findAll(List<Court> courtList, List<User> userList) {
+    public List<Reservation> findAll(List<Court> courtList, Map<String,User> userMap) {
         List<Reservation> reservationList = new ArrayList<>();
         BufferedReader br = null;
         try {
@@ -83,9 +84,7 @@ public class ReservationsFileRepository implements ReservationsRepository {
             String nextLine = br.readLine();
             while (null != nextLine) {
                 String[] properties = nextLine.split(",");
-                User user = userList.stream()
-                        .filter(u -> u.getPhoneNumber().equals(properties[3]))
-                        .findFirst().get();
+                User user = userMap.get(properties[3]);
                 Court court = courtList.stream()
                         .filter(c -> c.getId() == Integer.parseInt(properties[4]))
                         .findFirst().get();

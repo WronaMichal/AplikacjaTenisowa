@@ -1,5 +1,7 @@
 package pl.michal.wrona.tennisapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class User {
     private String password;
     private String emailAddress;
     private boolean isAdmin;
-
+    @JsonIgnore
     private List<Reservation> reservations = new ArrayList<>();
 
     public User(String phoneNumber, String password, String emailAddress, boolean isAdmin) {
@@ -56,6 +58,10 @@ public class User {
 
     public List<Reservation> getReservations() {
         return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     public void addReservation (Reservation reservation){

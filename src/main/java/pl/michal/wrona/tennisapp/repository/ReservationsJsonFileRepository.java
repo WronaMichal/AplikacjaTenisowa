@@ -1,6 +1,7 @@
 package pl.michal.wrona.tennisapp.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pl.michal.wrona.tennisapp.model.Court;
@@ -11,28 +12,28 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-public class ReservationsJsonFileRepository implements ReservationsRepository {
+
+
+public class ReservationsJsonFileRepository implements ReservationsRepository  {
     private ObjectMapper objectMapper;
-    private CourtsRepository courtsRepository;
-    private UsersRepository usersRepository;
-    private List<User> usersList = new ArrayList<>();
-    private List<Court> courtsList = new ArrayList<>();
+    private List<User> usersList;
+    private Map<String,User> userMap;
+    private List<Court> courtsList;
 
     public ReservationsJsonFileRepository(ObjectMapper objectMapper, CourtsRepository courtsRepository, UsersRepository usersRepository) {
         this.objectMapper = objectMapper;
-        usersList = usersRepository.findAll();
-        courtsList = courtsRepository.findAll();
+        objectMapper.registerModule(new JavaTimeModule());
 
     }
 
 
     @Override
     public void save(Reservation reservation) {
-        objectMapper.registerModule(new JavaTimeModule());
         String reservationJson = null;
-        List<Reservation> reservationsList = findAll(courtsList,usersList);
+        List<Reservation> reservationsList = findAll(courtsList,userMap);
         reservationsList.add(reservation);
         try {
             reservationJson = objectMapper.writeValueAsString(reservationsList);
@@ -100,28 +101,26 @@ public class ReservationsJsonFileRepository implements ReservationsRepository {
 
 
     @Override
-    public List<Reservation> findAll(List<Court> courtList, List<User> userList) {
+    public List<Reservation> findAll(List<Court> courtList, Map<String, User> userMap)  {
         List<Reservation> reservationList = new ArrayList<>();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\reservations.txt"));
-            String nextLine = br.readLine();
-            while (null != nextLine) {
-                String[] properties = nextLine.split(",");
-                User user = userList.stream()
-                        .filter(u -> u.getPhoneNumber().equals(properties[3]))
-                        .findFirst().get();
-                Court court = courtList.stream()
-                        .filter(c -> c.getId() == Integer.parseInt(properties[4]))
-                        .findFirst().get();
-                reservationList.add(new Reservation((Integer.parseInt(properties[0])),
-                        LocalDateTime.parse(properties[1]),
-                        LocalDateTime.parse(properties[2]),
-                        user, court
-                                ));
+            br = new BufferedReader(new FileReader("C:\\Users\\Michał\\Desktop\\AplikacjaTenisowa\\src\\main\\resources\\reservations.json"));
+            TypeReference<List<Reservation>> mapType = new TypeReference<>() {
 
-                nextLine = br.readLine();
-            }
+            };
+            reservationList = objectMapper.readValue(br, mapType);
+            reservationList.forEach(r->{
+                r.setUser(userMap.get(r.getUserPhoneNumber()));
+                r.setCourt(courtList.stream()
+                        .filter(c->c.getId()==(r.getCourtId()))
+                        .findFirst().get());
+            });
+//            reservationList.forEach(r->{
+//                r.setUser(userList.stream()
+//                        .filter(u->u.getPhoneNumber().equals(r.getUserPhoneNumber()))
+//                        .findFirst().get());
+//            });
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         } finally {

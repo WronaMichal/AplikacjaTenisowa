@@ -8,6 +8,7 @@ import pl.michal.wrona.tennisapp.repository.ReservationsRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -19,8 +20,10 @@ public class ReservationService {
 
     public ReservationService(UserService userService, CourtService courtService, ReservationsRepository reservationsRepository) {
         this.reservationsRepository = reservationsRepository;
-        reservationsList = reservationsRepository.findAll(courtService.getCourtsList(), userService.getUsersList());
-
+        List<User> usersList = userService.getUsersList();
+        Map<String, User> userMap = userService.getUserMap();
+        reservationsList = reservationsRepository.findAll(courtService.getCourtsList(), userService.getUserMap());
+        System.out.println(reservationsList);
     }
     /**
      * 1. check if time from, to exists.

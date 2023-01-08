@@ -1,5 +1,7 @@
 package pl.michal.wrona.tennisapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,27 +14,14 @@ public class Court {
     private int openingHour;
     private int closingHour;
     private double pricePerHour;
+    @JsonIgnore
     private List<Reservation> reservations = new ArrayList<>();
 
     public Court() {
     }
 
-    @Override
-    public String toString() {
-            return id + "," + getSurface().name() + "," + openingHour + "," + closingHour + "," + pricePerHour;
 
-    }
-
-
-    public Court fromString(String[] properties) {
-        return new Court(Integer.parseInt(properties[0]),
-                SurfaceCourt.valueOf(properties[1]),
-                Integer.parseInt(properties[2]),
-                Integer.parseInt(properties[3]),
-                Double.parseDouble(properties[4]));
-    }
-
-    //TODO wzorzec projektowy fabryka -> factory JAVA
+//TODO wzorzec projektowy fabryka -> factory JAVA
 
     public Court(SurfaceCourt surface, int openingHour, int closingHour, double pricePerHour) {
         maxCourtsCount++;
@@ -52,16 +41,20 @@ public class Court {
         this.pricePerHour = pricePerHour;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPricePerHour(double pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
     public int getId() {
         return id;
     }
 
     public double getPricePerHour() {
         return pricePerHour;
-    }
-
-    public void setPricePerHour(int pricePerHour) {
-        this.pricePerHour = pricePerHour;
     }
 
     public SurfaceCourt getSurface() {
@@ -98,5 +91,20 @@ public class Court {
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
+    }
+
+    @Override
+    public String toString() {
+        return id + "," + getSurface().name() + "," + openingHour + "," + closingHour + "," + pricePerHour;
+
+    }
+
+
+    public Court fromString(String[] properties) {
+        return new Court(Integer.parseInt(properties[0]),
+                SurfaceCourt.valueOf(properties[1]),
+                Integer.parseInt(properties[2]),
+                Integer.parseInt(properties[3]),
+                Double.parseDouble(properties[4]));
     }
 }
